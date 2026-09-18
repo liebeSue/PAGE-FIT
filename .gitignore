@@ -1,0 +1,7 @@
+.DS_Store
+*.pdf
+*.zip
+.env
+.env.*
+node_modules/
+tmp/
