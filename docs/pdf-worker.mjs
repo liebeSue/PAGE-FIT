@@ -1,4 +1,4 @@
-import {openPdf,targetSize,normalizePdf} from './pdf-core.mjs';
+import {openPdf,targetSize,normalizePdf} from './pdf-core.mjs?v=20260924-2';
 let documentState=null;
 self.onmessage=async({data})=>{
   const {id,action}=data;

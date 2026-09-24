@@ -1,4 +1,4 @@
-import {targetSize} from './pdf-core.mjs';
+import {targetSize} from './pdf-core.mjs?v=20260924-2';
 import {createVisualCopy,renderOptions} from './visual-copy.mjs';
 import * as pdfjs from './vendor/pdf.min.mjs';
 pdfjs.GlobalWorkerOptions.workerSrc=new URL('./vendor/pdf.worker.min.mjs',import.meta.url).href;
@@ -31,7 +31,7 @@ function clear(){
 }
 function worker(){
   if(state.worker)return state.worker;
-  const w=new Worker(new URL('./pdf-worker.mjs',import.meta.url),{type:'module'});
+  const w=new Worker(new URL('./pdf-worker.mjs?v=20260924-2',import.meta.url),{type:'module'});
   w.onmessage=({data})=>{
     if(data.progress!==undefined){$('progress').value=data.progress;$('progress-label').textContent=`Resizing pages… ${data.progress}%`;return;}
     const task=state.pending.get(data.id);if(!task)return;
