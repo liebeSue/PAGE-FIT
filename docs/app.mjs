@@ -54,8 +54,8 @@ $('password-cancel').addEventListener('click',clear);
 $('password-dialog').addEventListener('cancel',e=>{e.preventDefault();clear();});
 function updateSettings(){
   clearResult();error('');const mode=$('size').value;
-  $('orientation-field').hidden=!['a4','letter'].includes(mode);
-  $('size-help').textContent={first:'Uses the first page’s displayed width and height.',largest:'Uses the page with the largest area, including its current orientation.',a4:'Standard A4 paper: 210 × 297 mm.',letter:'Standard US Letter paper: 8.5 × 11 inches.'}[mode];
+  $('orientation-field').hidden=!['a4','a3'].includes(mode);
+  $('size-help').textContent={first:'Uses the first page’s displayed width and height.',largest:'Uses the page with the largest area, including its current orientation.',a4:'Standard A4 paper: 210 × 297 mm.',a3:'Standard A3 paper: 297 × 420 mm.',smallest:'Uses the page with the smallest area, including its current orientation.'}[mode];
   if(state.pages.length){try{$('target-dims').textContent=dims(selectedTarget());$('resize').disabled=state.busy;}catch(e){error(e.message);$('resize').disabled=true;}}
   drawAfter();
 }
@@ -64,7 +64,7 @@ async function loadFile(file){
   clear();const generation=state.generation;
   if(!file)return;
   if(!/\.pdf$/i.test(file.name)&&file.type!=='application/pdf'){error('Please choose a PDF file.');return;}
-  if(file.size>100*1024*1024){error('This PDF is larger than 100 MB. Please use a smaller file.');return;}
+  if(file.size>150*1024*1024){error('This PDF is larger than 150 MB. Please use a smaller file.');return;}
   if(!file.size){error('This file is empty. Please choose another PDF.');return;}
   busy(true,'Reading your PDF…');$('progress').removeAttribute('value');
   try{
@@ -179,7 +179,7 @@ window.addEventListener('pageshow',e=>{if(e.persisted)clear();});
 if(document.modelContext?.registerTool){
   const lifecycle=new AbortController();
   const register=tool=>{try{Promise.resolve(document.modelContext.registerTool(tool,{signal:lifecycle.signal})).catch(()=>{});}catch{}};
-  register({name:'configure_pdf_page_size',title:'Configure PDF page size',description:'Set the output size for the PDF already chosen by the user. Does not read a new file or create a download.',inputSchema:{type:'object',properties:{size:{type:'string',enum:['first','largest','a4','letter']},orientation:{type:'string',enum:['portrait','landscape']}},required:['size'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){if(state.busy)throw new Error('Processing is in progress.');if(!input||!['first','largest','a4','letter'].includes(input.size)||input.orientation&&!['portrait','landscape'].includes(input.orientation))throw new Error('Invalid output settings.');if(!state.pages.length)throw new Error('The user must choose a PDF first.');targetSize(state.pages,input.size,input.orientation||'portrait');$('size').value=input.size;$('orientation').value=input.orientation||'portrait';updateSettings();return {size:input.size,...selectedTarget()};}});
+  register({name:'configure_pdf_page_size',title:'Configure PDF page size',description:'Set the output size for the PDF already chosen by the user. Does not read a new file or create a download.',inputSchema:{type:'object',properties:{size:{type:'string',enum:['first','largest','smallest','a4','a3']},orientation:{type:'string',enum:['portrait','landscape']}},required:['size'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){if(state.busy)throw new Error('Processing is in progress.');if(!input||!['first','largest','smallest','a4','a3'].includes(input.size)||input.orientation&&!['portrait','landscape'].includes(input.orientation))throw new Error('Invalid output settings.');if(!state.pages.length)throw new Error('The user must choose a PDF first.');targetSize(state.pages,input.size,input.orientation||'portrait');$('size').value=input.size;$('orientation').value=input.orientation||'portrait';updateSettings();return {size:input.size,...selectedTarget()};}});
   register({name:'create_resized_pdf',title:'Create resized PDF',description:'Resize the currently selected PDF using the visible output settings. Prepares a local download; does not upload, send, or overwrite any file.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute:resize});
   window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true});
 }

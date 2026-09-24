@@ -41,12 +41,13 @@ export function targetSize(pages, mode, orientation='portrait') {
   if(mode==='first') size=pages[0];
   else if(mode==='largest') size=pages.reduce((a,b)=>a.width*a.height >= b.width*b.height ? a:b);
   else if(mode==='a4') size={width:210/25.4*72,height:297/25.4*72};
-  else if(mode==='letter') size={width:612,height:792};
+  else if(mode==='a3') size={width:297/25.4*72,height:420/25.4*72};
+  else if(mode==='smallest') size=pages.reduce((a,b)=>a.width*a.height <= b.width*b.height ? a:b);
   else throw new Error('Choose a valid page size.');
   if(!['portrait','landscape'].includes(orientation)) throw new Error('Choose a valid paper orientation.');
-  const swapped=(mode==='a4'||mode==='letter')&&orientation==='landscape';
+  const swapped=(mode==='a4'||mode==='a3')&&orientation==='landscape';
   const result={width:swapped?size.height:size.width,height:swapped?size.width:size.height};
-  if(result.width>14400 || result.height>14400) throw new Error('The selected output size exceeds 200 inches. Choose A4 or US Letter instead.');
+  if(result.width>14400 || result.height>14400) throw new Error('The selected output size exceeds 200 inches. Choose A4 or A3 instead.');
   return result;
 }
 

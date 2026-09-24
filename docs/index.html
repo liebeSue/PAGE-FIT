@@ -4,22 +4,36 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Make every page in a PDF the same size. Fit and center without cropping, stretching, or automatic rotation. Files stay in your browser.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="theme-color" content="#203a5b">
   <title>Page Fit · Consistent PDF pages</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23182132'/%3E%3Cpath d='M9 7h14v18H9z' fill='none' stroke='%23ffad66' stroke-width='2'/%3E%3Cpath d='M12 12h8M12 16h8M12 20h5' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="./styles.css">
-  <script type="module" src="./app.mjs"></script>
+  <link rel="icon" type="image/png" href="./page-fit-logo.png">
+  <link rel="apple-touch-icon" href="./page-fit-logo.png">
+  <link rel="stylesheet" href="./styles.css?v=20260924">
+  <script type="module" src="./app.mjs?v=20260924"></script>
 </head>
 <body>
-<header class="topbar"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true">P<span>f</span></span> Page Fit</a><span class="privacy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3M5 10h14v11H5z"/></svg> Your PDF stays on your device</span></header>
+<a class="skip-link" href="#dropzone">Skip to PDF tool</a>
+<header class="topbar"><a class="brand" href="./"><img class="brand-logo" src="./page-fit-logo.png" width="44" height="44" alt=""> Page Fit</a><span class="privacy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3M5 10h14v11H5z"/></svg> Your PDF stays on your device</span></header>
 <main>
-  <div class="heading"><p class="eyebrow">A LITTLE ORDER FOR YOUR PDFs</p><h1>Make every page the same size.</h1><p>Fit, center, and keep everything the right way up.</p></div>
+  <div class="heading"><p class="eyebrow">A LITTLE ORDER FOR YOUR PDFs</p><h1>Different pages. One perfect fit.</h1><p>Make every page the same size. Keep everything the right way up.</p></div>
+  <div class="app-layout">
+    <aside class="info-panel" aria-labelledby="info-title">
+      <div class="info-icon" aria-hidden="true">i</div>
+      <h2 id="info-title">Good to know</h2>
+
+      <div class="info-item"><h3>Stays on your device</h3><p>Your PDF is processed in your browser. No document upload.</p></div>
+      <div class="info-item"><h3>Original stays intact</h3><p>Download a new copy when you are ready.</p></div>
+      <div class="info-item"><h3>Everything in proportion</h3><p>Pages fit without cropping, stretching, or automatic rotation.</p></div>
+      <div class="info-item"><h3>Forms &amp; signatures</h3><p>Visual copies keep their appearance, but lose editable fields and digital-signature validity.</p></div>
+  <details class="support"><summary>Conversion details</summary><p>Pages fit proportionally, in their existing order and orientation. Ordinary PDFs retain text and graphics. PDFs with forms, signatures, annotations, or layers use a visual copy to include their rendered appearance. Visual copies contain page images at up to 300 dpi, reduced for very large pages. Text is no longer selectable, fields are not editable, and digital-signature validity is not retained.</p><p>Clickable links, bookmarks, attachments, accessibility tags, and popup comment text are not carried over. Check the preview and downloaded result, including visible fields and marks. Passwords are entered locally; the new copy is not password-protected. Damaged PDFs, printing restrictions, and dynamic XFA forms may require a standard PDF export from the original application. Limits: one PDF at a time, 150 MB, 1,000 pages, and 180 MB of converted page images.</p><p>Your PDF and password are not uploaded or stored by this tool. Only the download you choose to save creates a file. Clear PDF releases the document from the tool without deleting your original; closing the tab also clears the session. This is not a secure memory-erasure guarantee. Your browser, device, and download-folder sync follow their own policies.</p></details>
+    </aside>
   <div class="workspace">
     <section class="document-panel" aria-label="PDF and preview">
-      <div id="dropzone" class="dropzone">
-        <svg class="file-icon" viewBox="0 0 64 72" aria-hidden="true"><path d="M12 3h27l14 14v51H12zM39 3v15h14"/><path d="M23 36h19M23 44h19M23 52h12"/></svg>
-        <h2>Drop your PDF here</h2><p>or choose a file from your device</p>
+      <div id="dropzone" class="dropzone" tabindex="-1">
+        <p class="upload-step">01 / ADD YOUR PDF</p><svg class="file-icon" viewBox="0 0 64 72" aria-hidden="true"><path d="M12 3h27l14 14v51H12zM39 3v15h14"/><path d="M23 36h19M23 44h19M23 52h12"/></svg>
+        <h2>Drop your PDF here</h2><p>Choose a file to preview and resize.</p>
         <label class="button primary file-button" for="file-input">Choose PDF<input id="file-input" type="file" accept="application/pdf,.pdf"></label>
-        <span class="small muted">PDF files up to 100 MB</span>
+        <span class="small muted">Up to 150 MB · One PDF at a time</span>
       </div>
       <div id="loaded" hidden>
         <div class="file-bar"><div class="file-details"><span class="pdf-tag">PDF</span><div><h2 id="filename"></h2><p id="file-meta"></p></div></div><button id="remove" class="text-button" type="button" title="Clear this session without deleting your original">Clear PDF</button></div>
@@ -30,12 +44,12 @@
         </div>
         <p id="preview-status" class="preview-status" aria-live="polite"></p>
       </div>
-      <div class="panel-footer"><span class="check">✓</span> No cropping <span class="check">✓</span> No stretching <span class="check">✓</span> No auto-rotation</div>
+      <div class="panel-footer"><span><b class="check">✓</b> No cropping</span><span><b class="check">✓</b> No stretching</span><span><b class="check">✓</b> No auto-rotation</span></div>
     </section>
     <aside class="settings" aria-labelledby="settings-title">
-      <div class="section-number">01 / OUTPUT</div><h2 id="settings-title">One size for every page</h2>
+      <div class="section-number">02 / CHOOSE YOUR SIZE</div><h2 id="settings-title">Make it consistent</h2>
       <label for="size">Page size</label>
-      <select id="size"><option value="first">Match the first page</option><option value="largest">Match the largest page</option><option value="a4">A4</option><option value="letter">US Letter</option></select>
+      <select id="size"><option value="first">Match the first page</option><option value="largest">Match the largest page</option><option value="smallest">Match the smallest page</option><option value="a4">A4</option><option value="a3">A3</option></select>
       <p id="size-help" class="field-help">Uses the first page’s displayed width and height.</p>
       <div id="orientation-field" hidden><label for="orientation">Output paper orientation</label><select id="orientation"><option value="portrait">Portrait</option><option value="landscape">Landscape</option></select></div>
       <div class="output-summary"><span>Final page size</span><strong id="target-dims">Choose a PDF to begin</strong><span id="target-count" class="small">Every page will have these exact dimensions.</span></div>
@@ -47,8 +61,9 @@
       <p class="safe-note">Your original file is never changed.</p>
     </aside>
   </div>
+  </div>
   <div id="error" class="error" role="alert" hidden></div>
-  <details class="support"><summary>What stays the same? What should I know?</summary><p>Pages fit proportionally, in their existing order and orientation. Ordinary PDFs retain text and graphics. PDFs with forms, signatures, annotations, or layers use a visual copy to include their rendered appearance. Visual copies contain page images at up to 300 dpi, reduced for very large pages. Text is no longer selectable, fields are not editable, and digital-signature validity is not retained.</p><p>Clickable links, bookmarks, attachments, accessibility tags, and popup comment text are not carried over. Check the preview and downloaded result, including visible fields and marks. Passwords are entered locally; the new copy is not password-protected. Damaged PDFs, printing restrictions, and dynamic XFA forms may require a standard PDF export from the original application. Limits: one PDF at a time, 100 MB, 1,000 pages, and 180 MB of converted page images.</p><p>Your PDF and password are not uploaded or stored by this tool. Only the download you choose to save creates a file. Clear PDF releases the document from the tool without deleting your original; closing the tab also clears the session. This is not a secure memory-erasure guarantee. Your browser, device, and download-folder sync follow their own policies.</p></details>
+
   <footer><span>PAGE FIT</span><span>A consistent page. A simpler workflow.</span></footer>
 </main>
 <dialog id="password-dialog" aria-labelledby="password-title"><form id="password-form"><h2 id="password-title">Unlock this PDF</h2><p id="password-message"></p><label for="pdf-password">PDF password</label><input id="pdf-password" type="password" autocomplete="off" spellcheck="false"><div class="dialog-actions"><button id="password-cancel" type="button" class="button">Cancel</button><button type="submit" class="button primary">Unlock PDF</button></div></form></dialog>
