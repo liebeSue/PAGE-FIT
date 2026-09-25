@@ -1,0 +1,19 @@
+{
+  "id": "./",
+  "name": "Page Fit",
+  "short_name": "Page Fit",
+  "description": "Make every PDF page the same size, locally in your browser.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f6fb",
+  "theme_color": "#203a5b",
+  "icons": [
+    {
+      "src": "./page-fit-logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
