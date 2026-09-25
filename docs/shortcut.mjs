@@ -2,14 +2,17 @@ const dialog = document.querySelector('#shortcut-dialog');
 const install = document.querySelector('#install-app');
 const status = document.querySelector('#install-status');
 let promptEvent = null;
-document.querySelector('#shortcut-open').addEventListener('click', () => dialog.showModal());
+document.querySelector('#shortcut-open').addEventListener('click', () => {
+  if (promptEvent) requestInstall();
+  else dialog.showModal();
+});
 document.querySelector('#shortcut-close').addEventListener('click', () => dialog.close());
 window.addEventListener('beforeinstallprompt', event => {
   event.preventDefault();
   promptEvent = event;
   install.hidden = false;
 });
-install.addEventListener('click', async () => {
+async function requestInstall() {
   if (!promptEvent) return;
   const current = promptEvent;
   promptEvent = null;
@@ -17,11 +20,14 @@ install.addEventListener('click', async () => {
   try {
     await current.prompt();
     const choice = await current.userChoice;
-    status.textContent = choice.outcome === 'accepted' ? 'Follow your browser’s installation steps to finish.' : 'You can still use the shortcut steps below.';
+    if (!dialog.open) dialog.showModal();
+    status.textContent = choice.outcome === 'accepted' ? 'Follow your browser’s installation steps to finish.' : 'You can add Page Fit later using this button.';
   } catch {
-    status.textContent = 'Use the shortcut steps below to add Page Fit.';
+    if (!dialog.open) dialog.showModal();
+    status.textContent = 'Use your browser’s install menu to add Page Fit.';
   }
-});
+}
+install.addEventListener('click', requestInstall);
 window.addEventListener('appinstalled', () => {
   promptEvent = null;
   install.hidden = true;

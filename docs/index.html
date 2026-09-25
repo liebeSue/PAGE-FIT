@@ -8,14 +8,14 @@
   <title>Page Fit · Consistent PDF pages</title>
   <link rel="icon" type="image/png" href="./page-fit-logo.png">
   <link rel="manifest" href="./manifest.webmanifest">
-  <script type="module" src="./shortcut.mjs?v=20260925"></script>
+  <script type="module" src="./shortcut.mjs?v=20260925-2"></script>
   <link rel="apple-touch-icon" href="./page-fit-logo.png">
   <link rel="stylesheet" href="./styles.css?v=20260925">
   <script type="module" src="./app.mjs?v=20260924-2"></script>
 </head>
 <body>
 <a class="skip-link" href="#dropzone">Skip to PDF tool</a>
-<header class="topbar"><a class="brand" href="./"><img class="brand-logo" src="./page-fit-logo.png" width="44" height="44" alt=""> Page Fit</a><div class="header-actions"><button id="shortcut-open" class="shortcut-button" type="button">Add to desktop</button><span class="privacy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3M5 10h14v11H5z"/></svg> Your PDF stays on your device</span></div></header>
+<header class="topbar"><a class="brand" href="./"><img class="brand-logo" src="./page-fit-logo.png" width="44" height="44" alt=""> Page Fit</a><div class="header-actions"><button id="shortcut-open" class="shortcut-button" type="button">Add Page Fit</button><span class="privacy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3M5 10h14v11H5z"/></svg> Your PDF stays on your device</span></div></header>
 <main>
   <div class="heading"><p class="eyebrow">A LITTLE ORDER FOR YOUR PDFs</p><h1>Different pages. One perfect fit.</h1><p>Make every page the same size. Keep everything the right way up.</p></div>
   <div class="app-layout">
@@ -69,13 +69,12 @@
 </main>
 <dialog id="password-dialog" aria-labelledby="password-title"><form id="password-form"><h2 id="password-title">Unlock this PDF</h2><p id="password-message"></p><label for="pdf-password">PDF password</label><input id="pdf-password" type="password" autocomplete="off" spellcheck="false"><div class="dialog-actions"><button id="password-cancel" type="button" class="button">Cancel</button><button type="submit" class="button primary">Unlock PDF</button></div></form></dialog>
 <dialog id="shortcut-dialog" class="shortcut-dialog" aria-labelledby="shortcut-title">
-  <div class="shortcut-heading"><img src="./page-fit-logo.png" width="56" height="56" alt=""><div><h2 id="shortcut-title">Page Fit, one click away.</h2><p>Keep the tool close with your own shortcut.</p></div></div>
+  <div class="shortcut-heading"><img src="./page-fit-logo.png" width="56" height="56" alt=""><div><h2 id="shortcut-title">Page Fit, one click away.</h2><p>Your own window. Your Page Fit icon.</p></div></div>
   <p id="install-status" role="status"></p>
   <button id="install-app" class="button primary" type="button" hidden>Install Page Fit</button>
-  <details open><summary>Mac · desktop shortcut with our icon</summary><ol><li>Drag this link onto your desktop: <a href="https://liebesue.github.io/PAGE-FIT/" draggable="true">Page Fit</a>.</li><li><a href="./page-fit-logo.png" download="Page-Fit-Icon.png">Download the Page Fit icon</a>. Open it in Preview, press ⌘A, then ⌘C.</li><li>Select the desktop shortcut and press ⌘I. Click the small icon at the top left of the Info window, then press ⌘V.</li></ol><p>Already have a shortcut? Start with step 2.</p></details>
-  <details><summary>Mac · add to Dock</summary><p>In Safari on macOS Sonoma or later, choose File → Add to Dock, keep the name Page Fit, and click Add. The website supplies our logo for the app icon.</p></details>
-  <details><summary>Windows · Chrome or Edge</summary><p>If “Install Page Fit” appears above, select it. Otherwise, open your browser’s menu and look for Install Page Fit or Apps → Install this site as an app. Follow the browser’s options to create a desktop shortcut or pin it to your taskbar.</p></details>
-  <p class="shortcut-note">Your browser controls shortcut creation; this page cannot change desktop icons automatically. An internet connection may be needed to open the tool. Company device settings may limit installation.</p>
+  <details open><summary>Safari on Mac</summary><p>Choose <strong>File → Add to Dock</strong>, then click <strong>Add</strong>. Page Fit opens in its own window with its logo. Requires macOS Sonoma or later.</p></details>
+  <details><summary>Chrome or Edge · Mac and Windows</summary><p>Use <strong>Install Page Fit</strong> when offered. Confirm in your browser to add Page Fit with its logo and its own window.</p><p>If no install button appears, look for the install icon in the address bar or the install option in your browser’s menu.</p></details>
+  <p class="shortcut-note">Safari requires its Add to Dock menu; a website cannot trigger that step for you. Internet may be needed to open Page Fit. Installation depends on your browser and device settings.</p>
   <div class="dialog-actions"><button id="shortcut-close" class="button" type="button">Done</button></div>
 </dialog>
 <noscript>This tool needs JavaScript to process PDFs locally in your browser.</noscript>
