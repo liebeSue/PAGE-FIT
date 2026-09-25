@@ -10,7 +10,7 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <script type="module" src="./shortcut.mjs?v=20260925-2"></script>
   <link rel="apple-touch-icon" href="./page-fit-logo.png">
-  <link rel="stylesheet" href="./styles.css?v=20260925">
+  <link rel="stylesheet" href="./styles.css?v=20260925-3">
   <script type="module" src="./app.mjs?v=20260924-2"></script>
 </head>
 <body>
@@ -33,7 +33,7 @@
       <div id="dropzone" class="dropzone" tabindex="-1">
         <p class="upload-step">01 / ADD YOUR PDF</p><svg class="file-icon" viewBox="0 0 64 72" aria-hidden="true"><path d="M12 3h27l14 14v51H12zM39 3v15h14"/><path d="M23 36h19M23 44h19M23 52h12"/></svg>
         <h2>Drop your PDF here</h2><p>Choose a file to preview and resize.</p>
-        <label class="button primary file-button" for="file-input">Choose PDF<input id="file-input" type="file" accept="application/pdf,.pdf"></label>
+        <input id="file-input" class="native-file-input" type="file" accept="application/pdf,.pdf" aria-label="Choose PDF">
         <span class="small muted">Up to 150 MB · One PDF at a time</span>
       </div>
       <div id="loaded" hidden>
