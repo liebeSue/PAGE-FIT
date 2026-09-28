@@ -4,10 +4,11 @@ import * as pdfjs from './vendor/pdf.min.mjs';
 pdfjs.GlobalWorkerOptions.workerSrc=new URL('./vendor/pdf.worker.min.mjs',import.meta.url).href;
 const $=id=>document.getElementById(id);
 const state={pages:[],file:null,page:0,preview:null,worker:null,busy:false,generation:0,render:0,url:null,job:0,pending:new Map(),visualRequired:false,loadingTask:null,conversion:null};
+let downloadCleanup = null;
 const dims=s=>`${(s.width*25.4/72).toFixed(1)} × ${(s.height*25.4/72).toFixed(1)} mm`;
 const megabytes=n=>`${(n/1024/1024).toFixed(1)} MB`;
 function error(message){$('error').textContent=message;$('error').hidden=!message;}
-function clearResult(){if(state.url)URL.revokeObjectURL(state.url);state.url=null;$('ready').hidden=true;$('download').removeAttribute('href');}
+function clearResult(){if(state.url)URL.revokeObjectURL(state.url);state.url=null;$('ready').hidden=true;$('download').removeAttribute('href');$('download').removeAttribute('download');$('result-meta').textContent='';}
 function busy(value,label=''){
   state.busy=value;
   for(const id of ['size','orientation','file-input'])$(id).disabled=value;
@@ -16,6 +17,7 @@ function busy(value,label=''){
   $('progress-area').hidden=!value;$('progress-label').textContent=label;
 }
 function clear(){
+  clearTimeout(downloadCleanup);downloadCleanup=null;
   state.generation++;state.render++;
   state.conversion?.abort();state.conversion=null;
   state.loadingTask?.destroy().catch(()=>{});state.loadingTask=null;
@@ -27,7 +29,9 @@ function clear(){
   state.pages=[];state.file=null;state.page=0;clearResult();error('');busy(false);
   $('file-input').value='';$('dropzone').hidden=false;$('loaded').hidden=true;$('target-dims').textContent='Choose a PDF to begin';
   for(const id of ['before','after']){$(id).width=1;$(id).height=1;delete $(id).dataset.page;}
-  $('preview-status').textContent='';
+  for(const id of ['filename','file-meta','original-dims','output-dims','result-meta','preview-status','password-message','conversion-note'])$(id).textContent='';
+  $('page-count').textContent='';$('progress').value=0;
+  $('session-status').textContent='';
 }
 function worker(){
   if(state.worker)return state.worker;
@@ -175,11 +179,16 @@ dropzone.addEventListener('dragleave',()=>{dragDepth--;if(dragDepth<=0)dropzone.
 dropzone.addEventListener('drop',e=>{e.preventDefault();dragDepth=0;dropzone.classList.remove('dragging');if(e.dataTransfer.files.length!==1){error('Choose one PDF at a time.');return;}loadFile(e.dataTransfer.files[0]);});
 window.addEventListener('pagehide',clear);
 window.addEventListener('pageshow',e=>{if(e.persisted)clear();});
-// Optional page-scoped agent access uses exactly the same controls and actions.
-if(document.modelContext?.registerTool){
-  const lifecycle=new AbortController();
-  const register=tool=>{try{Promise.resolve(document.modelContext.registerTool(tool,{signal:lifecycle.signal})).catch(()=>{});}catch{}};
-  register({name:'configure_pdf_page_size',title:'Configure PDF page size',description:'Set the output size for the PDF already chosen by the user. Does not read a new file or create a download.',inputSchema:{type:'object',properties:{size:{type:'string',enum:['first','largest','smallest','a4','a3']},orientation:{type:'string',enum:['portrait','landscape']}},required:['size'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){if(state.busy)throw new Error('Processing is in progress.');if(!input||!['first','largest','smallest','a4','a3'].includes(input.size)||input.orientation&&!['portrait','landscape'].includes(input.orientation))throw new Error('Invalid output settings.');if(!state.pages.length)throw new Error('The user must choose a PDF first.');targetSize(state.pages,input.size,input.orientation||'portrait');$('size').value=input.size;$('orientation').value=input.orientation||'portrait';updateSettings();return {size:input.size,...selectedTarget()};}});
-  register({name:'create_resized_pdf',title:'Create resized PDF',description:'Resize the currently selected PDF using the visible output settings. Prepares a local download; does not upload, send, or overwrite any file.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute:resize});
-  window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true});
-}
+// Allow the browser to start consuming the download URL before releasing it.
+// This is a download-start grace period, not a signal that saving completed.
+$('download').addEventListener('click', () => {
+  if (!state.url || downloadCleanup !== null) return;
+  const generation = state.generation;
+  downloadCleanup = setTimeout(() => {
+    downloadCleanup = null;
+    if (generation !== state.generation) return;
+    clear();
+    $('session-status').textContent = 'Download requested. This session has been cleared. Check your downloads; if saving was canceled or failed, choose the original PDF again.';
+    $('file-input').focus();
+  }, 1500);
+});

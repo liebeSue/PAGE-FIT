@@ -11,7 +11,7 @@
   <script type="module" src="./shortcut.mjs?v=20260925-2"></script>
   <link rel="apple-touch-icon" href="./page-fit-logo.png">
   <link rel="stylesheet" href="./styles.css?v=20260925-4">
-  <script type="module" src="./app.mjs?v=20260924-2"></script>
+  <script type="module" src="./app.mjs?v=20260928-privacy"></script>
 </head>
 <body>
 <a class="skip-link" href="#dropzone">Skip to PDF tool</a>
@@ -26,7 +26,7 @@
       <div class="info-item"><h3>Original stays intact</h3><p>Download a new copy when you are ready.</p></div>
       <div class="info-item"><h3>Everything in proportion</h3><p>Pages fit without cropping, stretching, or automatic rotation.</p></div>
       <div class="info-item"><h3>Forms &amp; signatures</h3><p>Visual copies keep their appearance, but lose editable fields and digital-signature validity.</p></div>
-  <details class="support"><summary>Conversion details</summary><p>Pages fit proportionally, in their existing order and orientation. Ordinary PDFs retain text and graphics. PDFs with forms, signatures, annotations, or layers use a visual copy to include their rendered appearance. Visual copies contain page images at up to 300 dpi, reduced for very large pages. Text is no longer selectable, fields are not editable, and digital-signature validity is not retained.</p><p>Clickable links, bookmarks, attachments, accessibility tags, and popup comment text are not carried over. Check the preview and downloaded result, including visible fields and marks. Passwords are entered locally; the new copy is not password-protected. Damaged PDFs, printing restrictions, and dynamic XFA forms may require a standard PDF export from the original application. Limits: one PDF at a time, 150 MB, 1,000 pages, and 180 MB of converted page images.</p><p>Your PDF and password are not uploaded or stored by this tool. Only the download you choose to save creates a file. Clear PDF releases the document from the tool without deleting your original; closing the tab also clears the session. This is not a secure memory-erasure guarantee. Your browser, device, and download-folder sync follow their own policies.</p></details>
+  <details class="support"><summary>Conversion details</summary><p>Pages fit proportionally, in their existing order and orientation. Ordinary PDFs retain text and graphics. PDFs with forms, signatures, annotations, or layers use a visual copy to include their rendered appearance. Visual copies contain page images at up to 300 dpi, reduced for very large pages. Text is no longer selectable, fields are not editable, and digital-signature validity is not retained.</p><p>Clickable links, bookmarks, attachments, accessibility tags, and popup comment text are not carried over. Check the preview and downloaded result, including visible fields and marks. Passwords are entered locally; the new copy is not password-protected. Damaged PDFs, printing restrictions, and dynamic XFA forms may require a standard PDF export from the original application. Limits: one PDF at a time, 150 MB, 1,000 pages, and 180 MB of converted page images.</p><p>Your PDF and password are not uploaded or stored by this tool. Only the download you choose to save creates a file. The session clears automatically shortly after you click Download PDF, even if saving is canceled. Clear PDF and closing the tab also release the document without deleting your original. This is not a secure memory-erasure guarantee. Your browser, device, and download-folder sync follow their own policies.</p></details>
     </aside>
   <div class="workspace">
     <section class="document-panel" aria-label="PDF and preview">
@@ -58,11 +58,12 @@
       <div id="conversion-options" class="conversion-options" hidden><label class="check-label"><input id="visual-mode" type="checkbox"> Create a visual copy</label><p id="conversion-note"></p></div>
       <button id="resize" class="button primary resize" disabled><span id="resize-label">Resize PDF</span> <span aria-hidden="true">↗</span></button>
       <div id="progress-area" hidden><progress id="progress" max="100" value="0"></progress><p id="progress-label" role="status"></p></div>
-      <div id="ready" class="ready" hidden><strong>Your PDF is ready.</strong><p id="result-meta"></p><a id="download" class="button download" download>Download PDF <span aria-hidden="true">↓</span></a></div>
+      <div id="ready" class="ready" hidden><strong>Your PDF is ready.</strong><p>The session clears after you click Download. If saving fails, choose your original PDF again.</p><p id="result-meta"></p><a id="download" class="button download" download>Download PDF <span aria-hidden="true">↓</span></a></div>
       <p class="safe-note">Your original file is never changed.</p>
     </aside>
   </div>
   </div>
+  <p id="session-status" class="safe-note" role="status"></p>
   <div id="error" class="error" role="alert" hidden></div>
 
   <footer><span>PAGE FIT</span><span>A consistent page. A simpler workflow.</span></footer>
