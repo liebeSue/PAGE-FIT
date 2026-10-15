@@ -11,7 +11,7 @@
   <script type="module" src="./shortcut.mjs?v=20260925-2"></script>
   <link rel="apple-touch-icon" href="./page-fit-logo.png">
   <link rel="stylesheet" href="./styles.css?v=20260925-4">
-  <script type="module" src="./app.mjs?v=20260928-privacy"></script>
+  <script type="module" src="./app.mjs?v=20261015-250mb"></script>
 </head>
 <body>
 <a class="skip-link" href="#dropzone">Skip to PDF tool</a>
@@ -26,7 +26,7 @@
       <div class="info-item"><h3>Original stays intact</h3><p>Download a new copy when you are ready.</p></div>
       <div class="info-item"><h3>Everything in proportion</h3><p>Pages fit without cropping, stretching, or automatic rotation.</p></div>
       <div class="info-item"><h3>Forms &amp; signatures</h3><p>Visual copies keep their appearance, but lose editable fields and digital-signature validity.</p></div>
-  <details class="support"><summary>Conversion details</summary><p>Pages fit proportionally, in their existing order and orientation. Ordinary PDFs retain text and graphics. PDFs with forms, signatures, annotations, or layers use a visual copy to include their rendered appearance. Visual copies contain page images at up to 300 dpi, reduced for very large pages. Text is no longer selectable, fields are not editable, and digital-signature validity is not retained.</p><p>Clickable links, bookmarks, attachments, accessibility tags, and popup comment text are not carried over. Check the preview and downloaded result, including visible fields and marks. Passwords are entered locally; the new copy is not password-protected. Damaged PDFs, printing restrictions, and dynamic XFA forms may require a standard PDF export from the original application. Limits: one PDF at a time, 150 MB, 1,000 pages, and 180 MB of converted page images.</p><p>Your PDF and password are not uploaded or stored by this tool. Only the download you choose to save creates a file. The session clears automatically shortly after you click Download PDF, even if saving is canceled. Clear PDF and closing the tab also release the document without deleting your original. This is not a secure memory-erasure guarantee. Your browser, device, and download-folder sync follow their own policies.</p></details>
+  <details class="support"><summary>Conversion details</summary><p>Pages fit proportionally, in their existing order and orientation. Ordinary PDFs retain text and graphics. PDFs with forms, signatures, annotations, or layers use a visual copy to include their rendered appearance. Visual copies contain page images at up to 300 dpi, reduced for very large pages. Text is no longer selectable, fields are not editable, and digital-signature validity is not retained.</p><p>Clickable links, bookmarks, attachments, accessibility tags, and popup comment text are not carried over. Check the preview and downloaded result, including visible fields and marks. Passwords are entered locally; the new copy is not password-protected. Damaged PDFs, printing restrictions, and dynamic XFA forms may require a standard PDF export from the original application. Limits: one PDF at a time, 250 MB, 1,000 pages, and 180 MB of converted page images.</p><p>Your PDF and password are not uploaded or stored by this tool. Only the download you choose to save creates a file. The session clears automatically shortly after you click Download PDF, even if saving is canceled. Clear PDF and closing the tab also release the document without deleting your original. This is not a secure memory-erasure guarantee. Your browser, device, and download-folder sync follow their own policies.</p></details>
     </aside>
   <div class="workspace">
     <section class="document-panel" aria-label="PDF and preview">
@@ -34,7 +34,7 @@
         <p class="upload-step">01 / ADD YOUR PDF</p><svg class="file-icon" viewBox="0 0 64 72" aria-hidden="true"><path d="M12 3h27l14 14v51H12zM39 3v15h14"/><path d="M23 36h19M23 44h19M23 52h12"/></svg>
         <h2>Drop your PDF here</h2><p>Choose a file to preview and resize.</p>
         <input id="file-input" class="native-file-input" type="file" accept="application/pdf,.pdf" aria-label="Choose PDF">
-        <span class="small muted">Up to 150 MB · One PDF at a time</span>
+        <span class="small muted">Up to 250 MB · One PDF at a time</span>
       </div>
       <div id="loaded" hidden>
         <div class="file-bar"><div class="file-details"><span class="pdf-tag">PDF</span><div><h2 id="filename"></h2><p id="file-meta"></p></div></div><button id="remove" class="text-button" type="button" title="Clear this session without deleting your original">Clear PDF</button></div>

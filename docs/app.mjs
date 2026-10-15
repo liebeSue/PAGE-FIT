@@ -68,7 +68,7 @@ async function loadFile(file){
   clear();const generation=state.generation;
   if(!file)return;
   if(!/\.pdf$/i.test(file.name)&&file.type!=='application/pdf'){error('Please choose a PDF file.');return;}
-  if(file.size>150*1024*1024){error('This PDF is larger than 150 MB. Please use a smaller file.');return;}
+  if(file.size>250*1024*1024){error('This PDF is larger than 250 MB. Please use a smaller file.');return;}
   if(!file.size){error('This file is empty. Please choose another PDF.');return;}
   busy(true,'Reading your PDF…');$('progress').removeAttribute('value');
   try{
